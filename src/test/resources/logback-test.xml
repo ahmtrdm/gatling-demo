@@ -28,7 +28,7 @@
 
 	<!-- <logger name="io.gatling.http.ahc" level="ERROR" /> -->
 
-	<root level="ERROR">
+	<root level="TRACE">
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE" />
 	</root>
