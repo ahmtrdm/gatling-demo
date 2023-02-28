@@ -10,7 +10,7 @@ import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
 
-public class LoginAndGetUser extends Simulation {
+public class LoginAndGetUserSeperated extends Simulation {
 
     private HttpProtocolBuilder httpProtocol = http
             .baseUrl("https://security.testing.pcc.pro-client.de")
@@ -23,27 +23,28 @@ public class LoginAndGetUser extends Simulation {
             .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36");
 
 
-    private ScenarioBuilder scn = scenario("LoginLoadTest")
+    private ScenarioBuilder scn = scenario("Login")
             .exec(
                     http("Token")
                             .post("/api/users/token")
                             .body(RawFileBody("/src/test/resources/proClient/loginloadtest/loginrequest.json"))
                             .check(status().is(200))
                             .check(jsonPath("$..tokenString").exists().saveAs("authToken"))
+            )
 
 
 
-            ).exec(http("GetUser")
+            .exec(http("GetUser")
                     .get("/api/users")
                     .header("Authorization","Bearer ${authToken}")
                     .header("applicationkey","Guides")
-                    //.check(status().is(200))
+                    .check(status().is(200))
                     .check(jsonPath("$.items.ExceptionMessage").optional().saveAs("response"))
                     //.check(jsonPath("$.totalCount").optional().saveAs("id"))
-                    .check(status().saveAs("status"))
+                    .check(status().exists().saveAs("status"))
 
 
-            )
+            );/*
             .doIf(session -> {
                 int status = session.getInt("status");
                 return status < 200 || status > 304;
@@ -56,14 +57,14 @@ public class LoginAndGetUser extends Simulation {
                                 return session;
                             }
                     )
-            );
+            )*/
 
 
     {
 
 
         //mvn gatling:test -Dgatling.simulationClass=proClient.LoginAndGetUser
-        setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(1)).protocols(httpProtocol));
+        //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(1000)).protocols(httpProtocol));
 
         //For this scenario mvn run command like:
         // mvn gatling:test -Dgatling.simulationClass=proClient.LoginAndGetUser
@@ -87,6 +88,25 @@ public class LoginAndGetUser extends Simulation {
                 ).protocols(httpProtocol));
                 */
 
+        //Seperated injection
+
+        setUp(
+                scn.injectOpen(rampUsers(300).during(10)
+                        /*rampUsers(20).during(10),
+                        rampUsers(30).during(10),
+                        rampUsers(40).during(10),
+                        rampUsers(50).during(10),
+                        rampUsers(60).during(10),
+                        rampUsers(70).during(10),
+                        rampUsers(80).during(10),
+                        rampUsers(90).during(10),
+                        rampUsers(100).during(10),
+                        rampUsers(200).during(10),
+                        rampUsers(300).during(10),
+                        rampUsers(400).during(10),
+                        rampUsers(500).during(10),
+                        rampUsers(600).during(10))*/
+        ).protocols(httpProtocol));
 
 
     }
