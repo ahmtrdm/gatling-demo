@@ -46,7 +46,7 @@ public class LoginLoadTest extends Simulation {
     //mvn gatling:test -Dgatling.simulationClass=proClient.LoginLoadTest
     //setUp(scn.injectOpen(rampUsers(30).during(30)).protocols(httpProtocol));
 
-    setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(initialUserCount)).protocols(httpProtocol));
+    //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(initialUserCount)).protocols(httpProtocol));
 
     //For this scenario mvn run command like:
     // mvn gatling:test -Dgatling.simulationClass=proClient.LoginLoadTest -DinitialUserCount=50
@@ -55,17 +55,24 @@ public class LoginLoadTest extends Simulation {
 
     //For this scenario mvn run command like:
     // mvn gatling:test -Dgatling.simulationClass=proClient.LoginLoadTest
-    /*
-      setUp(scn.injectOpen(rampUsers(10).during(1),
-            rampUsers(20).during(1),
-            rampUsers(30).during(1),
-            rampUsers(40).during(1),
-            rampUsers(50).during(1),
-            rampUsers(100).during(1),
-            rampUsers(200).during(1),
-            rampUsers(300).during(1)
+
+      setUp(scn.injectOpen(rampUsers(10).during(10),
+            rampUsers(20).during(10),
+            rampUsers(30).during(10),
+            rampUsers(40).during(10),
+            rampUsers(50).during(10),
+            rampUsers(100).during(10),
+            rampUsers(200).during(10),
+            rampUsers(300).during(10),
+            rampUsers(400).during(10),
+            rampUsers(500).during(10),
+            rampUsers(600).during(10),
+            rampUsers(700).during(10),
+            rampUsers(800).during(10),
+            rampUsers(900).during(10),
+            rampUsers(1000).during(10)
             ).protocols(httpProtocol));
-    */
+
 
     /*
     setUp(

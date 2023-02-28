@@ -25,12 +25,11 @@
 	<!-- uncomment and set to TRACE to log all HTTP requests -->
 	<logger name="io.gatling.http.engine.response" level="ERROR" />
 	<logger name="io.gatling.http.response" level="ERROR" />
+	<logger name="io.gatling.http.ahc" level="ERROR" />
 
-	<!-- <logger name="io.gatling.http.ahc" level="ERROR" /> -->
 
-	<root level="TRACE">
+	<root level="ERROR">
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE" />
 	</root>
-
 </configuration>
