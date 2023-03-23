@@ -1,14 +1,15 @@
 package proClient;
 
-import io.gatling.javaapi.core.*;
-import io.gatling.javaapi.http.*;
-
-import java.util.UUID;
+import io.gatling.javaapi.core.OpenInjectionStep;
+import io.gatling.javaapi.core.ScenarioBuilder;
+import io.gatling.javaapi.core.Simulation;
+import io.gatling.javaapi.http.HttpProtocolBuilder;
 
 import static io.gatling.javaapi.core.CoreDsl.*;
-import static io.gatling.javaapi.http.HttpDsl.*;
+import static io.gatling.javaapi.http.HttpDsl.http;
+import static io.gatling.javaapi.http.HttpDsl.status;
 
-public class LoadDashboardTest extends Simulation {
+public class LoadClosingChapterTest extends Simulation {
 
   private HttpProtocolBuilder httpProtocol = http
     .baseUrl("https://security.testing.pcc.pro-client.de")
@@ -86,7 +87,7 @@ public class LoadDashboardTest extends Simulation {
       //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(initialUserCount)).protocols(httpProtocol));
       //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(100)).protocols(httpProtocol));
 
-      setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(50)).protocols(httpProtocol));
+      setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(1)).protocols(httpProtocol));
 
 
       //For this scenario mvn run command like:
