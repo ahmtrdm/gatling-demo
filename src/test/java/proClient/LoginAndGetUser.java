@@ -10,6 +10,7 @@ import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
 
+
 public class LoginAndGetUser extends Simulation {
 
     private HttpProtocolBuilder httpProtocol = http
@@ -22,8 +23,15 @@ public class LoginAndGetUser extends Simulation {
             .originHeader("http://pcc.testing.pcc.pro-client.de")
             .userAgentHeader("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36");
 
-
-    private ScenarioBuilder scn = scenario("LoginLoadTest")
+    ScenarioBuilder scnLogin = scenario("Get Token")
+            .exec(
+                    http("Token")
+                            .post("/api/users/token")
+                            .body(RawFileBody("/src/test/resources/proClient/loginloadtest/loginrequest.json"))
+                            .check(status().is(200))
+                            .check(jsonPath("$..tokenString").exists().saveAs("authToken"))
+            );
+     ScenarioBuilder scn = scenario("LoginLoadTest")
             .exec(
                     http("Token")
                             .post("/api/users/token")
@@ -33,7 +41,9 @@ public class LoginAndGetUser extends Simulation {
 
 
 
-            ).exec(http("GetUser")
+            )//.pause(5)
+             .exec(http("Get User")
+
                     .get("/api/users")
                     .header("Authorization","Bearer ${authToken}")
                     .header("applicationkey","Guides")
@@ -43,32 +53,24 @@ public class LoginAndGetUser extends Simulation {
                     .check(status().saveAs("status"))
 
 
-            )
-            .doIf(session -> {
-                int status = session.getInt("status");
-                return status < 200 || status > 304;
-            }).then(
-                    exec(
-                            session -> {
-                                String errorMessage = session.getString("response");
-                                // perform accountId storage
-                                System.out.println("exception occured..");
-                                return session;
-                            }
-                    )
             );
+
 
 
     {
 
 
         //mvn gatling:test -Dgatling.simulationClass=proClient.LoginAndGetUser
-        setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(1)).protocols(httpProtocol));
+        //setUp(scnLogin.injectOpen(OpenInjectionStep.atOnceUsers(1)).protocols(httpProtocol),
+                //scn.injectOpen(OpenInjectionStep.atOnceUsers(2)).protocols(httpProtocol));
+        //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(100)).protocols(httpProtocol));
+
+        setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(50)).protocols(httpProtocol));
 
         //For this scenario mvn run command like:
         // mvn gatling:test -Dgatling.simulationClass=proClient.LoginAndGetUser
-
         /*
+
           setUp(scn.injectOpen(rampUsers(10).during(10),
                 rampUsers(20).during(10),
                 rampUsers(30).during(10),
@@ -85,8 +87,16 @@ public class LoginAndGetUser extends Simulation {
                   rampUsers(900).during(10),
                   rampUsers(1000).during(10)
                 ).protocols(httpProtocol));
-                */
 
+         */
+        /*
+        setUp(scn.injectOpen(
+                rampUsers(50).during(10),
+                rampUsers(100).during(10),
+                rampUsers(150).during(10),
+                rampUsers(200).during(10)
+        ).protocols(httpProtocol));
+        */
 
 
     }

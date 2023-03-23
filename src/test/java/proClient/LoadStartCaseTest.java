@@ -1,14 +1,19 @@
 package proClient;
 
+import io.gatling.javaapi.core.OpenInjectionStep;
 import io.gatling.javaapi.core.ScenarioBuilder;
+import io.gatling.javaapi.core.Session;
 import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 import static io.gatling.javaapi.core.CoreDsl.*;
@@ -34,7 +39,7 @@ public class LoadStartCaseTest extends Simulation {
   private String uri2 = "https://runtime.testing.pcc.pro-client.de";
 
 
-  private ScenarioBuilder scn = scenario("LoadDashboardTest")
+  private ScenarioBuilder scn = scenario("StartCase")
           .exec(
                   http("Token")
                           .post("/api/users/token")
@@ -42,18 +47,19 @@ public class LoadStartCaseTest extends Simulation {
                           .check(status().is(200))
                           .check(jsonPath("$..tokenString").exists().saveAs("authToken"))
 
-
-          ).exec(http("Run Case")
+          )
+            .exec(http("Run Case")
                   .post(uri2 + "/api/guides/9c26b8e7-9e5d-4522-9ae8-dbf0c21fe746/instances")
                   .header("Authorization","Bearer ${authToken}")
                   .header("ApplicationKey","Guides")
                   .body(StringBody("{\"preview\":false}"))
-                  .check(status().is(200))
-          );
+            .check(status().is(200))
+            );
 
   {
       // general way
       //mvn gatling:test -Dgatling.simulationClass=proClient.LoadStartCaseTest
+
       //setUp(scn.injectOpen(rampUsers(1).during(1)).protocols(httpProtocol));
 
       //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(initialUserCount)).protocols(httpProtocol));
@@ -61,12 +67,14 @@ public class LoadStartCaseTest extends Simulation {
       //For this scenario mvn run command like:
       // mvn gatling:test -Dgatling.simulationClass=proClient.LoadStartCaseTest -DinitialUserCount=50
       //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(initialUserCount)).protocols(httpProtocol));
+      //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(100)).protocols(httpProtocol));
+
+      setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(50)).protocols(httpProtocol));
 
 
       //For this scenario mvn run command like:
       // mvn gatling:test -Dgatling.simulationClass=proClient.LoadStartCaseTest
-
-
+        /*
       setUp(scn.injectOpen(rampUsers(10).during(10),
               rampUsers(20).during(10),
               rampUsers(30).during(10),
@@ -83,8 +91,16 @@ public class LoadStartCaseTest extends Simulation {
               rampUsers(900).during(10),
               rampUsers(1000).during(10)
       ).protocols(httpProtocol));
-
-
+        */
+        /*
+      setUp(scn.injectOpen(
+              rampUsers(50).during(10),
+              rampUsers(100).during(10),
+              rampUsers(150).during(10),
+              rampUsers(200).during(10),
+              rampUsers(200).during(10)
+      ).protocols(httpProtocol));
+        */
     /*
     setUp(
             // generate an open workload injection profile

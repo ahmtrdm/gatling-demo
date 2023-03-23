@@ -1,5 +1,6 @@
 package proClient;
 
+import io.gatling.javaapi.core.OpenInjectionStep;
 import io.gatling.javaapi.core.ScenarioBuilder;
 import io.gatling.javaapi.core.Simulation;
 import io.gatling.javaapi.http.HttpProtocolBuilder;
@@ -31,12 +32,14 @@ public class LoadRunningCaseViewTest extends Simulation {
 
 
   private String uri1 = "https://runtime.testing.pcc.pro-client.de/api/dashboard";
-  
 
-  
+  private String runtime = "https://runtime.testing.pcc.pro-client.de";
+  private String designer = "https://designer.testing.pcc.pro-client.de";
 
+  ///api/guideContents/{guide_Id}:start-case
+  private int repeatCount = 10;
 
-  private ScenarioBuilder scn = scenario("LoadDashboardTest")
+  private ScenarioBuilder scn = scenario("Get Running Cases")
           .exec(
                   http("Token")
                           .post("/api/users/token")
@@ -44,8 +47,27 @@ public class LoadRunningCaseViewTest extends Simulation {
                           .check(status().is(200))
                           .check(jsonPath("$..tokenString").exists().saveAs("authToken"))
 
-          ).exec(http("Get Running Cases")
-                  .get(uri1 + "/my-cases/running")
+          )
+          .exec(http("Get Running Case")
+                  .get(designer + "/api/guideContents/9c26b8e7-9e5d-4522-9ae8-dbf0c21fe746:start-case")
+                  .header("Authorization","Bearer ${authToken}")
+                  .header("applicationkey","Guides")
+                  .check(status().is(200))
+
+          ).exec(http("Get instance")
+                  .get(runtime + "/api/instances/c5e32651-3073-466f-9472-9754e4ca9389")
+                  .header("Authorization","Bearer ${authToken}")
+                  .header("applicationkey","Guides")
+                  .check(status().is(200))
+
+          ).exec(http("Get Case Overview")
+                  .get(runtime + "/api/instances/c5e32651-3073-466f-9472-9754e4ca9389/case-overview")
+                  .header("Authorization","Bearer ${authToken}")
+                  .header("applicationkey","Guides")
+                  .check(status().is(200))
+
+          ).exec(http("Get Documents")
+                  .get(runtime + "/api/instances/c5e32651-3073-466f-9472-9754e4ca9389/documents")
                   .header("Authorization","Bearer ${authToken}")
                   .header("applicationkey","Guides")
                   .check(status().is(200))
@@ -58,6 +80,9 @@ public class LoadRunningCaseViewTest extends Simulation {
       //setUp(scn.injectOpen(rampUsers(1).during(1)).protocols(httpProtocol));
 
       //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(initialUserCount)).protocols(httpProtocol));
+      //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(100)).protocols(httpProtocol));
+
+      setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(50)).protocols(httpProtocol));
 
       //For this scenario mvn run command like:
       // mvn gatling:test -Dgatling.simulationClass=proClient.LoadRunningCaseViewTest -DinitialUserCount=50
@@ -67,7 +92,7 @@ public class LoadRunningCaseViewTest extends Simulation {
       //For this scenario mvn run command like:
       // mvn gatling:test -Dgatling.simulationClass=proClient.LoadRunningCaseViewTest
 
-
+        /*
       setUp(scn.injectOpen(rampUsers(10).during(10),
               rampUsers(20).during(10),
               rampUsers(30).during(10),
@@ -84,8 +109,15 @@ public class LoadRunningCaseViewTest extends Simulation {
               rampUsers(900).during(10),
               rampUsers(1000).during(10)
       ).protocols(httpProtocol));
-
-
+        */
+      /*
+      setUp(scn.injectOpen(
+              rampUsers(50).during(10),
+              rampUsers(100).during(10),
+              rampUsers(150).during(10),
+              rampUsers(200).during(10)
+      ).protocols(httpProtocol));
+        */
     /*
     setUp(
             // generate an open workload injection profile

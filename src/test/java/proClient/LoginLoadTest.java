@@ -37,8 +37,7 @@ public class LoginLoadTest extends Simulation {
     );
 
 
-  public int initialUserCount = Integer.getInteger("initialUserCount", 1);
-  public int repeatCount = Integer.getInteger("repeatCount",1);
+
 
   {
 
@@ -50,12 +49,15 @@ public class LoginLoadTest extends Simulation {
 
     //For this scenario mvn run command like:
     // mvn gatling:test -Dgatling.simulationClass=proClient.LoginLoadTest -DinitialUserCount=50
-    //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(initialUserCount)).protocols(httpProtocol));
+    //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(100)).protocols(httpProtocol));
+
+    setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(50)).protocols(httpProtocol));
 
 
     //For this scenario mvn run command like:
     // mvn gatling:test -Dgatling.simulationClass=proClient.LoginLoadTest
 
+      /*
       setUp(scn.injectOpen(rampUsers(10).during(10),
             rampUsers(20).during(10),
             rampUsers(30).during(10),
@@ -72,8 +74,13 @@ public class LoginLoadTest extends Simulation {
             rampUsers(900).during(10),
             rampUsers(1000).during(10)
             ).protocols(httpProtocol));
-
-
+        */
+      /*setUp(scn.injectOpen(
+              rampUsers(50).during(10),
+              rampUsers(100).during(10),
+              rampUsers(150).during(10)
+      ).protocols(httpProtocol));
+        */
     /*
     setUp(
             // generate an open workload injection profile

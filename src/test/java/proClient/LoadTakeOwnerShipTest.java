@@ -1,14 +1,16 @@
 package proClient;
 
-import io.gatling.javaapi.core.*;
-import io.gatling.javaapi.http.*;
-
-import java.util.UUID;
+import io.gatling.http.request.BodyPart;
+import io.gatling.javaapi.core.OpenInjectionStep;
+import io.gatling.javaapi.core.ScenarioBuilder;
+import io.gatling.javaapi.core.Simulation;
+import io.gatling.javaapi.http.HttpProtocolBuilder;
 
 import static io.gatling.javaapi.core.CoreDsl.*;
-import static io.gatling.javaapi.http.HttpDsl.*;
+import static io.gatling.javaapi.http.HttpDsl.http;
+import static io.gatling.javaapi.http.HttpDsl.status;
 
-public class LoadDashboardTest extends Simulation {
+public class LoadTakeOwnerShipTest extends Simulation {
 
   private HttpProtocolBuilder httpProtocol = http
     .baseUrl("https://security.testing.pcc.pro-client.de")
@@ -23,7 +25,7 @@ public class LoadDashboardTest extends Simulation {
   
   private String uri1 = "https://runtime.testing.pcc.pro-client.de/api/dashboard";
 
-  private String uri2 = "https://runtime.testing.pcc.pro-client.de";
+  private String runtime = "https://runtime.testing.pcc.pro-client.de";
   
   //private String uri2 = "https://user-profile.testing.pcc.pro-client.de/api/user-profiles/ebdef984-ecd8-43b6-b9c0-af8ca7aa882b";
   
@@ -34,6 +36,9 @@ public class LoadDashboardTest extends Simulation {
   private String uri6 = "https://dashboard.testing.pcc.pro-client.de/api";
 
 
+
+
+
   private ScenarioBuilder scn = scenario("LoadDashboardTest")
           .exec(
                   http("Token")
@@ -42,32 +47,16 @@ public class LoadDashboardTest extends Simulation {
                           .check(status().is(200))
                           .check(jsonPath("$..tokenString").exists().saveAs("authToken"))
 
-          ).exec(http("Get Running Cases")
-                  .get(uri1 + "/my-cases/running")
+          ).exec(http("Take Ownership Summary")
+                  .post(runtime + "/api/instances/take-ownership-multi-selection-summary")
+                  .body(RawFileBody("/src/test/resources/proClient/loginloadtest/takeOwnershipReq.json"))
                   .header("Authorization","Bearer ${authToken}")
                   .header("applicationkey","Guides")
                   .check(status().is(200))
 
-          ).exec(http("Get My Cases")
-                  .get(uri2 + "/api/views/my-cases")
-                  .header("Authorization","Bearer ${authToken}")
-                  .header("applicationkey","Guides")
-                  .check(status().is(200))
-
-          ).exec(http("Get Inbox")
-                  .get(uri2 + "/api/views/inbox")
-                  .header("Authorization","Bearer ${authToken}")
-                  .header("applicationkey","Guides")
-                  .check(status().is(200))
-
-          ).exec(http("Get Dashboard Inbox")
-                  .get(uri2 + "/api/dashboard/inbox")
-                  .header("Authorization","Bearer ${authToken}")
-                  .header("applicationkey","Guides")
-                  .check(status().is(200))
-
-          ).exec(http("Get Profiles")
-                  .get(uri6 + "/profiles/ebdef984-ecd8-43b6-b9c0-af8ca7aa882b")
+          ).exec(http("Take Ownership")
+                  .put(runtime + "/api/instances/take-ownership-multi-selection")
+                  .body(RawFileBody("/src/test/resources/proClient/loginloadtest/takeOwnershipReq.json"))
                   .header("Authorization","Bearer ${authToken}")
                   .header("applicationkey","Guides")
                   .check(status().is(200))
