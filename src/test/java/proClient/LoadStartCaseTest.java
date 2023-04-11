@@ -49,7 +49,7 @@ public class LoadStartCaseTest extends Simulation {
 
           )
             .exec(http("Run Case")
-                  .post(uri2 + "/api/guides/9c26b8e7-9e5d-4522-9ae8-dbf0c21fe746/instances")
+                  .post(uri2 + "/api/guides/cf1510d3-78b6-45dd-a991-4d0600426749/instances")
                   .header("Authorization","Bearer ${authToken}")
                   .header("ApplicationKey","Guides")
                   .body(StringBody("{\"preview\":false}"))
