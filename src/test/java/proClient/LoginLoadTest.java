@@ -51,7 +51,7 @@ public class LoginLoadTest extends Simulation {
     // mvn gatling:test -Dgatling.simulationClass=proClient.LoginLoadTest -DinitialUserCount=50
     //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(100)).protocols(httpProtocol));
 
-    setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(50)).protocols(httpProtocol));
+    setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(100)).protocols(httpProtocol));
 
 
     //For this scenario mvn run command like:
