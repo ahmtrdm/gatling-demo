@@ -43,34 +43,18 @@ public class LoadClosingChapterTest extends Simulation {
                           .check(status().is(200))
                           .check(jsonPath("$..tokenString").exists().saveAs("authToken"))
 
-          ).exec(http("Get Running Cases")
-                  .get(uri1 + "/my-cases/running")
+          ).exec(http("Run Case")
+                  .post(uri2 + "/api/guides/cf1510d3-78b6-45dd-a991-4d0600426749/instances")
                   .header("Authorization","Bearer ${authToken}")
-                  .header("applicationkey","Guides")
+                  .header("ApplicationKey","Guides")
+                  .body(StringBody("{\"preview\":false}"))
                   .check(status().is(200))
-
-          ).exec(http("Get My Cases")
-                  .get(uri2 + "/api/views/my-cases")
+          )
+          .exec(http("Closing Chapter Running Case")
+                  .post(uri2 + "/api/instances/cf1510d3-78b6-45dd-a991-4d0600426749/activities/ac6ca204-d142-4263-828e-9a33a0c3dab8/buttons/e87f7229-8093-4bd6-9a93-af491fe27834:click")
                   .header("Authorization","Bearer ${authToken}")
                   .header("applicationkey","Guides")
-                  .check(status().is(200))
-
-          ).exec(http("Get Inbox")
-                  .get(uri2 + "/api/views/inbox")
-                  .header("Authorization","Bearer ${authToken}")
-                  .header("applicationkey","Guides")
-                  .check(status().is(200))
-
-          ).exec(http("Get Dashboard Inbox")
-                  .get(uri2 + "/api/dashboard/inbox")
-                  .header("Authorization","Bearer ${authToken}")
-                  .header("applicationkey","Guides")
-                  .check(status().is(200))
-
-          ).exec(http("Get Profiles")
-                  .get(uri6 + "/profiles/ebdef984-ecd8-43b6-b9c0-af8ca7aa882b")
-                  .header("Authorization","Bearer ${authToken}")
-                  .header("applicationkey","Guides")
+                  .body(RawFileBody("src/test/resources/proClient/loginloadtest/closingChapterRequest.json"))
                   .check(status().is(200))
 
           );

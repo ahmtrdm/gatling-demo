@@ -29,11 +29,11 @@ public class LoadTakeOwnerShipTest extends Simulation {
   
   //private String uri2 = "https://user-profile.testing.pcc.pro-client.de/api/user-profiles/ebdef984-ecd8-43b6-b9c0-af8ca7aa882b";
   
-  private String uri3 = "https://designer.testing.pcc.pro-client.de/api/guides/runnable/quick-search";
+  private String designer = "https://designer.testing.pcc.pro-client.de";
   
-  private String uri5 = "https://notifications.testing.pcc.pro-client.de/api/notifications/aggregate";
+  private String dynamicData = "https://dynamic-data.testing.pcc.pro-client.de";
   
-  private String uri6 = "https://dashboard.testing.pcc.pro-client.de/api";
+  private String systemData = "https://system-data.testing.pcc.pro-client.de";
 
 
 

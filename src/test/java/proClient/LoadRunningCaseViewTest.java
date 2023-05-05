@@ -49,25 +49,25 @@ public class LoadRunningCaseViewTest extends Simulation {
 
           )
           .exec(http("Get Running Case")
-                  .get(designer + "/api/guideContents/9c26b8e7-9e5d-4522-9ae8-dbf0c21fe746:start-case")
+                  .get(designer + "/api/guideContents/2964e6aa-c8be-4fa5-a22e-41fa6200d386:start-case")
                   .header("Authorization","Bearer ${authToken}")
                   .header("applicationkey","Guides")
                   .check(status().is(200))
 
           ).exec(http("Get instance")
-                  .get(runtime + "/api/instances/c5e32651-3073-466f-9472-9754e4ca9389")
+                  .get(runtime + "/api/instances/b13dd165-5155-4fad-9c0c-010cca68a4cc")
                   .header("Authorization","Bearer ${authToken}")
                   .header("applicationkey","Guides")
                   .check(status().is(200))
 
           ).exec(http("Get Case Overview")
-                  .get(runtime + "/api/instances/c5e32651-3073-466f-9472-9754e4ca9389/case-overview")
+                  .get(runtime + "/api/instances/b13dd165-5155-4fad-9c0c-010cca68a4cc/case-overview")
                   .header("Authorization","Bearer ${authToken}")
                   .header("applicationkey","Guides")
                   .check(status().is(200))
 
           ).exec(http("Get Documents")
-                  .get(runtime + "/api/instances/c5e32651-3073-466f-9472-9754e4ca9389/documents")
+                  .get(runtime + "/api/instances/b13dd165-5155-4fad-9c0c-010cca68a4cc/documents")
                   .header("Authorization","Bearer ${authToken}")
                   .header("applicationkey","Guides")
                   .check(status().is(200))
@@ -82,7 +82,7 @@ public class LoadRunningCaseViewTest extends Simulation {
       //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(initialUserCount)).protocols(httpProtocol));
       //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(100)).protocols(httpProtocol));
 
-      setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(50)).protocols(httpProtocol));
+      setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(100)).protocols(httpProtocol));
 
       //For this scenario mvn run command like:
       // mvn gatling:test -Dgatling.simulationClass=proClient.LoadRunningCaseViewTest -DinitialUserCount=50

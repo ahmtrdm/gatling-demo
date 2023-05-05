@@ -14,7 +14,7 @@
     <!-- comment the 2 lines above and uncomment the line bellow if you're compiling with JDK 11 or 17 -->
     <maven.compiler.release>19</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <gatling.version>${project.version}</gatling.version>
+    <gatling.version>3.9.1</gatling.version>
     <gatling-maven-plugin.version>4.3.0</gatling-maven-plugin.version>
     <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
     <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
@@ -49,7 +49,7 @@
     <dependency>
       <groupId>io.gatling</groupId>
       <artifactId>gatling-http</artifactId>
-      <version>3.9.1</version>
+      <version>${gatling.version}</version>
     </dependency>
 
     <dependency>
