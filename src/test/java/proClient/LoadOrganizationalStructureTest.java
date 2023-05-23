@@ -53,18 +53,19 @@ public class LoadOrganizationalStructureTest extends Simulation {
                             .header("applicationkey","Guides")
                             .check(status().is(200))
 
-          /*).exec(http("Save Organizational Structure details")
-                  .put(systemData + "/api/org-units/97bd3962-e444-4951-ada1-445a49a56824")
+          ).exec(http("Save Organizational Structure details")
+                  .put(systemData + "/api/org-units/d937d230-2eba-4d27-bda1-f82b775aff7e")
+                    .body(RawFileBody("/src/test/resources/proClient/loginloadtest/saveOrganization.json"))
                   .header("Authorization","Bearer ${authToken}")
                   .header("applicationkey","Guides")
                   .check(status().is(200))
-          */).exec(http("Get Guide Library details")
+          ).exec(http("Get Guide Library details")
                     .get(designer + "/api/guides?$orderby=createdDateTime%20desc&$top=10&$skip=0&$count=true")
                     .header("Authorization","Bearer ${authToken}")
                     .header("applicationkey","Guides")
                     .check(status().is(200))
             ).exec(http("Get Case Views")
-                    .get(runtime + "/api/entity-data")
+                    .get(runtime + "/api/views/list")
                     .header("Authorization","Bearer ${authToken}")
                     .header("applicationkey","Guides")
                     .check(status().is(200))
@@ -88,7 +89,7 @@ public class LoadOrganizationalStructureTest extends Simulation {
         //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(initialUserCount)).protocols(httpProtocol));
         //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(100)).protocols(httpProtocol));
 
-        setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(10)).protocols(httpProtocol));
+        setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(50)).protocols(httpProtocol));
 
 
         //For this scenario mvn run command like:
