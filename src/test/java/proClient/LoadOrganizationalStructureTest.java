@@ -70,7 +70,7 @@ public class LoadOrganizationalStructureTest extends Simulation {
                     .header("applicationkey","Guides")
                     .check(status().is(200))
             ).exec(http("Get Dynamic Data details")
-                    .get(dynamicData + "/api/entity-data")
+                    .get(dynamicData + "/api/entity-definitions/DATATEST")
                     .header("Authorization","Bearer ${authToken}")
                     .header("applicationkey","Guides")
                     .check(status().is(200))
@@ -89,7 +89,7 @@ public class LoadOrganizationalStructureTest extends Simulation {
         //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(initialUserCount)).protocols(httpProtocol));
         //setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(100)).protocols(httpProtocol));
 
-        setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(50)).protocols(httpProtocol));
+        setUp(scn.injectOpen(OpenInjectionStep.atOnceUsers(100)).protocols(httpProtocol));
 
 
         //For this scenario mvn run command like:
